@@ -28,8 +28,7 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.arcadeDrive(RobotContainer.k_driver.getRawAxis(0), RobotContainer.k_driver.getRawAxis(4), true);
-
+    drivetrain.arcadeDrive(RobotContainer.k_driver.getRawAxis(1), RobotContainer.k_driver.getRawAxis(4), true);
   }
 
   // Called once the command ends or is interrupted.

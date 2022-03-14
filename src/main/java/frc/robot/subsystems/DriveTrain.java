@@ -8,21 +8,26 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive drive;
+  private final CANSparkMax leftMainMotor;
+  private final CANSparkMax leftFollowerMotor;
+  private final CANSparkMax rightMainMotor;
+  private final CANSparkMax rightFollowerMotor;
 
   public DriveTrain() {
-    CANSparkMax leftMainMotor = new CANSparkMax(Constants.LEFT_MAIN_MOTOR_ID, MotorType.kBrushless);
-    CANSparkMax rightMainMotor = new CANSparkMax(Constants.RIGHT_MAIN_MOTOR_ID, MotorType.kBrushless);
+    leftMainMotor = new CANSparkMax(Constants.LEFT_MAIN_MOTOR_ID, MotorType.kBrushless);
+    rightMainMotor = new CANSparkMax(Constants.RIGHT_MAIN_MOTOR_ID, MotorType.kBrushless);
 
-    CANSparkMax leftFollowerMotor = new CANSparkMax(Constants.LEFT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+    leftFollowerMotor = new CANSparkMax(Constants.LEFT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
     leftFollowerMotor.follow(leftMainMotor);
 
-    CANSparkMax rightFollowerMotor = new CANSparkMax(Constants.RIGHT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+    rightFollowerMotor = new CANSparkMax(Constants.RIGHT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
     rightFollowerMotor.follow(rightMainMotor);
 
     drive = new DifferentialDrive(leftMainMotor, rightMainMotor);
@@ -30,7 +35,10 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Side Main Current", leftMainMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Left Side Follower Current", leftFollowerMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Right Side Main Current", rightMainMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Right Side Follower Current", rightFollowerMotor.getOutputCurrent());
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
