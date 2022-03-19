@@ -29,14 +29,14 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void execute() {
     double x = RobotContainer.k_driver.getRawAxis(4);
-    double y = RobotContainer.k_driver.getRawAxis(0);
+    double y = RobotContainer.k_driver.getRawAxis(1);
 
-    if (x <= 0.05) {
-      x=0;
+    if (Math.abs(x) <= 0.05) {
+      x = 0;
     }
 
-    if (y <= 0.05) {
-      y=0;
+    if (Math.abs(y) <= 0.05) {
+      y = 0;
     }
 
     drivetrain.arcadeDrive(y, x, true);
