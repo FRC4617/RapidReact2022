@@ -6,18 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 
-public class ArcadeDrive extends CommandBase {
+public class DriveShooter extends CommandBase {
 
-  private final DriveTrain drivetrain;
+  private final Shooter shooter;
 
-  /** Creates a new ArcadeDrive. */
-  public ArcadeDrive(DriveTrain subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    drivetrain = subsystem;
+  /** Creates a new DriveShooter. */
+  public DriveShooter(Shooter subsytem) {
+    shooter = subsytem;
 
-    addRequirements(subsystem);
+    addRequirements(subsytem);
   }
 
   // Called when the command is initially scheduled.
@@ -28,25 +27,13 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = RobotContainer.k_driver.getRawAxis(4);
-    double y = RobotContainer.k_driver.getRawAxis(0);
-
-    if (x <= 0.05) {
-      x=0;
-    }
-
-    if (y <= 0.05) {
-      y=0;
-    }
-
-    drivetrain.arcadeDrive(y, x, true);
-
+    shooter.setMotorSpeed(RobotContainer.k_driver.getRawAxis(3));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.stop();
+    shooter.stop();
   }
 
   // Returns true when the command should end.
