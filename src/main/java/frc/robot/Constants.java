@@ -19,4 +19,6 @@ public final class Constants {
     public static int RIGHT_FOLLOWER_MOTOR_ID = 2;
 
     public static int SHOOTER_MOTOR_ID = 5;
+
+    public static int CLIMBER_MOTOR_ID = 6;
 }

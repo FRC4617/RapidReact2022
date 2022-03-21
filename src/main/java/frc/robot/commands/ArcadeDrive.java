@@ -28,7 +28,7 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = RobotContainer.k_driver.getRawAxis(4);
+    double x = -RobotContainer.k_driver.getRawAxis(4);
     double y = RobotContainer.k_driver.getRawAxis(1);
 
     if (Math.abs(x) <= 0.05) {

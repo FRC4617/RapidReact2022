@@ -6,15 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 
-public class DriveShooter extends CommandBase {
+public class DriveClimber extends CommandBase {
 
-  private final Shooter shooter;
+  private final Climber climber;
 
   /** Creates a new DriveShooter. */
-  public DriveShooter(Shooter subsytem) {
-    shooter = subsytem;
+  public DriveClimber(Climber subsytem) {
+    climber = subsytem;
 
     addRequirements(subsytem);
   }
@@ -27,13 +27,13 @@ public class DriveShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setMotorSpeed(RobotContainer.k_driver.getRawAxis(3) * 0.75);
+    climber.setMotorSpeed(RobotContainer.k_driver.getRawAxis(2));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stop();
+    climber.stop();
   }
 
   // Returns true when the command should end.
