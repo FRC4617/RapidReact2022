@@ -7,12 +7,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.AutoDriveShooter;
 import frc.robot.commands.DriveClimber;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveShooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -60,7 +63,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
-    return new ArcadeDrive(k_drivetrain);
+    return new SequentialCommandGroup(
+      new AutoDriveShooter(k_shooter, 0.5).withTimeout(2),
+      new DriveDistance(k_drivetrain, -2.0)
+    );
   }
 }

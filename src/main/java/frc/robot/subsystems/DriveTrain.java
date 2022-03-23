@@ -15,14 +15,18 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive drive;
 
+  private final CANSparkMax leftMainMotor = new CANSparkMax(Constants.LEFT_MAIN_MOTOR_ID, MotorType.kBrushless);
+  private final CANSparkMax rightMainMotor = new CANSparkMax(Constants.RIGHT_MAIN_MOTOR_ID, MotorType.kBrushless);
+
+  private final CANSparkMax leftFollowerMotor = new CANSparkMax(Constants.LEFT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+  private final CANSparkMax rightFollowerMotor = new CANSparkMax(Constants.RIGHT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+
+  // 42 counts per revolution
+  // 10.71 ratio
+  // 6 inch diameter
+
   public DriveTrain() {
-    CANSparkMax leftMainMotor = new CANSparkMax(Constants.LEFT_MAIN_MOTOR_ID, MotorType.kBrushless);
-    CANSparkMax rightMainMotor = new CANSparkMax(Constants.RIGHT_MAIN_MOTOR_ID, MotorType.kBrushless);
-
-    CANSparkMax leftFollowerMotor = new CANSparkMax(Constants.LEFT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
     leftFollowerMotor.follow(leftMainMotor);
-
-    CANSparkMax rightFollowerMotor = new CANSparkMax(Constants.RIGHT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
     rightFollowerMotor.follow(rightMainMotor);
 
     drive = new DifferentialDrive(leftMainMotor, rightMainMotor);
@@ -31,6 +35,31 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public double leftRotations() {
+    return leftMainMotor.getEncoder().getPosition() / 42.0;
+  }
+
+  public double rightRotations() {
+    return rightMainMotor.getEncoder().getPosition() / 42.0;
+  }
+
+  public double leftDistance() {
+    return (leftRotations() / 10.71) * (Math.PI * 0.1524);
+  }
+
+  public double rightDistance() {
+    return (rightRotations() / 10.71) * (Math.PI * 0.1524);
+  }
+
+  public double getEncoderCount(double meters) {
+    return (meters / (Math.PI * 0.1524)) * 10.71 * 42.0;
+  }
+
+  public void resetEncoders() {
+    leftMainMotor.getEncoder().setPosition(0);
+    rightMainMotor.getEncoder().setPosition(0);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
