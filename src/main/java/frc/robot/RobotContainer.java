@@ -11,6 +11,7 @@ import frc.robot.commands.AutoDriveShooter;
 import frc.robot.commands.DriveClimber;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveShooter;
+import frc.robot.commands.DriveTime;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -64,8 +65,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
-      new AutoDriveShooter(k_shooter, 0.5).withTimeout(2),
-      new DriveDistance(k_drivetrain, -2.0)
+      new AutoDriveShooter(k_shooter, 1).withTimeout(1),
+      new DriveTime(k_drivetrain, 0.5, 0).withTimeout(1.5)
     );
   }
 }

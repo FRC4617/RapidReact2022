@@ -5,48 +5,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 
-public class ArcadeDrive extends CommandBase {
-
+public class DriveTime extends CommandBase {
   private final DriveTrain drivetrain;
+  private final double x, y;
 
-  /** Creates a new ArcadeDrive. */
-  public ArcadeDrive(DriveTrain subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    drivetrain = subsystem;
-
+  public DriveTime(DriveTrain subsystem, double y, double x) {
     addRequirements(subsystem);
+    this.drivetrain = subsystem;
+    this.y = y;
+    this.x = x;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = -RobotContainer.k_driver.getRawAxis(4);
-    double y = RobotContainer.k_driver.getRawAxis(1);
-
-    if (Math.abs(x) <= 0.05) {
-      x = 0;
-    }
-
-    if (Math.abs(y) <= 0.05) {
-      y = 0;
-    }
-
-    drivetrain.arcadeDrive(y * 0.85, x, true);
-
+    this.drivetrain.arcadeDrive(y, x, true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.stop();
+    this.drivetrain.stop();
   }
 
   // Returns true when the command should end.

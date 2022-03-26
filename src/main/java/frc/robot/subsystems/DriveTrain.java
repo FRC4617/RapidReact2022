@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -29,28 +30,34 @@ public class DriveTrain extends SubsystemBase {
     leftFollowerMotor.follow(leftMainMotor);
     rightFollowerMotor.follow(rightMainMotor);
 
+    leftMainMotor.setInverted(true);
+    leftFollowerMotor.setInverted(true);
+
     drive = new DifferentialDrive(leftMainMotor, rightMainMotor);
+
+    //resetEncoders();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    //SmartDashboard.putNumber("Left Distance", leftRotations());
+    //SmartDashboard.putNumber("Right Distance", rightRotations());
   }
 
   public double leftRotations() {
-    return leftMainMotor.getEncoder().getPosition() / 42.0;
+    return leftMainMotor.getEncoder().getPosition() / 10.71 * -1;
   }
 
   public double rightRotations() {
-    return rightMainMotor.getEncoder().getPosition() / 42.0;
+    return rightMainMotor.getEncoder().getPosition() / 10.71 * -1;
   }
 
   public double leftDistance() {
-    return (leftRotations() / 10.71) * (Math.PI * 0.1524);
+    return (leftRotations()) * (Math.PI * 0.1524);
   }
 
   public double rightDistance() {
-    return (rightRotations() / 10.71) * (Math.PI * 0.1524);
+    return (rightRotations()) * (Math.PI * 0.1524);
   }
 
   public double getEncoderCount(double meters) {
