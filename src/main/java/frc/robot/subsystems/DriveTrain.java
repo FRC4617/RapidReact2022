@@ -15,30 +15,58 @@ import frc.robot.Constants;
 public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive drive;
-  private final CANSparkMax leftMainMotor;
-  private final CANSparkMax leftFollowerMotor;
-  private final CANSparkMax rightMainMotor;
-  private final CANSparkMax rightFollowerMotor;
+
+  private final CANSparkMax leftMainMotor = new CANSparkMax(Constants.LEFT_MAIN_MOTOR_ID, MotorType.kBrushless);
+  private final CANSparkMax rightMainMotor = new CANSparkMax(Constants.RIGHT_MAIN_MOTOR_ID, MotorType.kBrushless);
+
+  private final CANSparkMax leftFollowerMotor = new CANSparkMax(Constants.LEFT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+  private final CANSparkMax rightFollowerMotor = new CANSparkMax(Constants.RIGHT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+
+  // 42 counts per revolution
+  // 10.71 ratio
+  // 6 inch diameter
 
   public DriveTrain() {
-    leftMainMotor = new CANSparkMax(Constants.LEFT_MAIN_MOTOR_ID, MotorType.kBrushless);
-    rightMainMotor = new CANSparkMax(Constants.RIGHT_MAIN_MOTOR_ID, MotorType.kBrushless);
-
-    leftFollowerMotor = new CANSparkMax(Constants.LEFT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
     leftFollowerMotor.follow(leftMainMotor);
-
-    rightFollowerMotor = new CANSparkMax(Constants.RIGHT_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
     rightFollowerMotor.follow(rightMainMotor);
 
+    leftMainMotor.setInverted(true);
+    leftFollowerMotor.setInverted(true);
+
     drive = new DifferentialDrive(leftMainMotor, rightMainMotor);
+
+    //resetEncoders();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Left Side Main Current", leftMainMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Left Side Follower Current", leftFollowerMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Right Side Main Current", rightMainMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Right Side Follower Current", rightFollowerMotor.getOutputCurrent());
+    //SmartDashboard.putNumber("Left Distance", leftRotations());
+    //SmartDashboard.putNumber("Right Distance", rightRotations());
+  }
+
+  public double leftRotations() {
+    return leftMainMotor.getEncoder().getPosition() / 10.71 * -1;
+  }
+
+  public double rightRotations() {
+    return rightMainMotor.getEncoder().getPosition() / 10.71 * -1;
+  }
+
+  public double leftDistance() {
+    return (leftRotations()) * (Math.PI * 0.1524);
+  }
+
+  public double rightDistance() {
+    return (rightRotations()) * (Math.PI * 0.1524);
+  }
+
+  public double getEncoderCount(double meters) {
+    return (meters / (Math.PI * 0.1524)) * 10.71 * 42.0;
+  }
+
+  public void resetEncoders() {
+    leftMainMotor.getEncoder().setPosition(0);
+    rightMainMotor.getEncoder().setPosition(0);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean isQuickTurn) {

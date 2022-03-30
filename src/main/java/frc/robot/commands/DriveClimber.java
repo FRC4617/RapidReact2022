@@ -4,21 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
-
-enum ClimberState {
-  IDLE,
-  MOVING
-}
 
 public class DriveClimber extends CommandBase {
 
   private final Climber climber;
   private boolean driveable = true;
-  private boolean lastLimitSwitchVal = true;
-  private ClimberState state = ClimberState.IDLE;
 
   /** Creates a new DriveShooter. */
   public DriveClimber(Climber subsytem) {
@@ -36,21 +30,25 @@ public class DriveClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    switch (state) {
-      case IDLE:
-        if (RobotContainer.k_operator.getBButton()) state = ClimberState.MOVING;
-        else climber.setMotorSpeed(-0.05);
-        break;
-      case MOVING:
-        if (driveable) {
-          climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
-          if (climber.getLimitSwitch() && !lastLimitSwitchVal) driveable = false;
-        }
-        else {
-          climber.setMotorSpeed(0);
-        }
+    //SmartDashboard.putBoolean("Limit Switch", climber.getLimitSwitch());
+
+    if (RobotContainer.k_operator.getBButton()) {
+      climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
     }
-    lastLimitSwitchVal = climber.getLimitSwitch();
+    else {
+      climber.setMotorSpeed(-0.05);
+    }
+
+    /*if (driveable == true && climber.getLimitSwitch() == true) {
+      climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
+    }
+    else if (driveable == true && climber.getLimitSwitch() == false) {
+      driveable = false;
+      climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
+    }
+    else if (driveable == false && climber.getLimitSwitch() == true) {
+      climber.setMotorSpeed(0);
+    }*/
   }
 
   // Called once the command ends or is interrupted.
