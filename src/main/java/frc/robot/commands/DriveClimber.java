@@ -34,26 +34,35 @@ public class DriveClimber extends CommandBase {
   @Override
   public void execute() {
     //SmartDashboard.putBoolean("Limit Switch", climber.getLimitSwitch());
-    if (RobotContainer.k_operator.getBButton()) {
+    /*if (RobotContainer.k_operator.getBButton()) {
       climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
     }
     else {
       climber.setMotorSpeed(-0.05);
-    }
+    }*/
 
-    if (RobotContainer.k_operator.getBButtonPressed()==true) {
+
+//switching all functionality to one controller
+    if (RobotContainer.k_driver.getBButton()) {
+      climber.setMotorSpeed(RobotContainer.k_driver.getRawAxis(2));
+    }
+    else {
+      climber.setMotorSpeed(-0.05);
+    }
+    
+    /*if (RobotContainer.k_operator.getBButtonPressed()==true) {
       climber.setMotorSpeed(climberSpeed);
       if(climber.potentiometer.get()>upperClimberLimit){
         climber.setMotorSpeed(0);
       }
-    }
+    }*/
 
-    if (RobotContainer.k_operator.getYButtonPressed()==true) {
+    /*if (RobotContainer.k_operator.getYButtonPressed()==true) {
       climber.setMotorSpeed(climberSpeed);
       if(climber.potentiometer.get()>lowerClimberLimit){
         climber.setMotorSpeed(0);
       }
-    }
+    }*/
 
     /*if (RobotContainer.k_operator.getBButton()) {
       climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
