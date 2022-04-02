@@ -44,7 +44,7 @@ public class DriveClimber extends CommandBase {
 
 //switching all functionality to one controller
     if (RobotContainer.k_driver.getBButton()) {
-      climber.setMotorSpeed(RobotContainer.k_driver.getRawAxis(2));
+      climber.setMotorSpeed(-RobotContainer.k_driver.getRawAxis(2));
     }
     else {
       climber.setMotorSpeed(-0.05);
