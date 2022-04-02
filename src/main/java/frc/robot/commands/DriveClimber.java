@@ -13,6 +13,9 @@ public class DriveClimber extends CommandBase {
 
   private final Climber climber;
   private boolean driveable = true;
+  private double climberSpeed = 0;
+  private double lowerClimberLimit = 0;
+  private double upperClimberLimit = 0;
 
   /** Creates a new DriveShooter. */
   public DriveClimber(Climber subsytem) {
@@ -31,13 +34,33 @@ public class DriveClimber extends CommandBase {
   @Override
   public void execute() {
     //SmartDashboard.putBoolean("Limit Switch", climber.getLimitSwitch());
-
     if (RobotContainer.k_operator.getBButton()) {
       climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
     }
     else {
       climber.setMotorSpeed(-0.05);
     }
+
+    if (RobotContainer.k_operator.getBButtonPressed()==true) {
+      climber.setMotorSpeed(climberSpeed);
+      if(climber.potentiometer.get()>upperClimberLimit){
+        climber.setMotorSpeed(0);
+      }
+    }
+
+    if (RobotContainer.k_operator.getYButtonPressed()==true) {
+      climber.setMotorSpeed(climberSpeed);
+      if(climber.potentiometer.get()>lowerClimberLimit){
+        climber.setMotorSpeed(0);
+      }
+    }
+
+    /*if (RobotContainer.k_operator.getBButton()) {
+      climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
+    }
+    else {
+      climber.setMotorSpeed(-0.05);
+    }*/
 
     /*if (driveable == true && climber.getLimitSwitch() == true) {
       climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
