@@ -16,6 +16,8 @@ public class DriveClimber extends CommandBase {
   private double climberSpeed = 0;
   private double lowerClimberLimit = 0;
   private double upperClimberLimit = 0;
+  private double climberZero = 0.05;
+  public double climberRotations = 0;
 
   /** Creates a new DriveShooter. */
   public DriveClimber(Climber subsytem) {
@@ -43,20 +45,35 @@ public class DriveClimber extends CommandBase {
 
 
 //switching all functionality to one controller
-    if (RobotContainer.k_driver.getBButton()) {
+    /* (RobotContainer.k_driver.getBButton()) {
       climber.setMotorSpeed(-RobotContainer.k_driver.getRawAxis(2));
     }
     else {
-      climber.setMotorSpeed(-0.05);
-    }
+      //climber.setMotorSpeed(0.05);
+    } */
     
-    /*if (RobotContainer.k_operator.getBButtonPressed()==true) {
+  /*  if (RobotContainer.k_operator.getBButtonPressed()==true) {
       climber.setMotorSpeed(climberSpeed);
       if(climber.potentiometer.get()>upperClimberLimit){
         climber.setMotorSpeed(0);
       }
-    }*/
-
+    } */
+      if (RobotContainer.k_operator.getAButtonPressed()==true) {
+        climberRotations = climber.encoderCount();
+        climber.setMotorSpeed(climberSpeed);
+        if (climber.encoderCount() > (climberRotations+lowerClimberLimit))
+        {
+          climber.setMotorSpeed(0);
+        }
+      }
+      if (RobotContainer.k_operator.getYButtonPressed()==true) {
+        climberRotations = climber.encoderCount();
+        climber.setMotorSpeed(climberSpeed);
+        if (climber.encoderCount() > (climberRotations+upperClimberLimit))
+        {
+          climber.setMotorSpeed(0);
+        }
+        }
     /*if (RobotContainer.k_operator.getYButtonPressed()==true) {
       climber.setMotorSpeed(climberSpeed);
       if(climber.potentiometer.get()>lowerClimberLimit){
@@ -64,12 +81,14 @@ public class DriveClimber extends CommandBase {
       }
     }*/
 
-    /*if (RobotContainer.k_operator.getBButton()) {
+    if (RobotContainer.k_operator.getBButton()) {
       climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));
+      climberZero=0;
     }
     else {
-      climber.setMotorSpeed(-0.05);
-    }*/
+      climberZero=-0.05;
+      climber.setMotorSpeed(climberZero);
+    }
 
     /*if (driveable == true && climber.getLimitSwitch() == true) {
       climber.setMotorSpeed(RobotContainer.k_operator.getRawAxis(2));

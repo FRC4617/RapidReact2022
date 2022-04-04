@@ -11,6 +11,7 @@ import frc.robot.subsystems.DriveTrain;
 public class ArcadeDrive extends CommandBase {
 
   private final DriveTrain drivetrain;
+  public int driveInverter = 1;
 
   /** Creates a new ArcadeDrive. */
   public ArcadeDrive(DriveTrain subsystem) {
@@ -28,8 +29,17 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
+    if(RobotContainer.k_driver.getLeftBumperPressed()){
+      driveInverter=1;
+    }
+
+    if(RobotContainer.k_driver.getRightBumperPressed()){
+      driveInverter=-1;
+    }
+
     double x = -RobotContainer.k_driver.getRawAxis(4);
-    double y = RobotContainer.k_driver.getRawAxis(1);
+    double y = driveInverter*RobotContainer.k_driver.getRawAxis(1);
 
     if (Math.abs(x) <= 0.05) {
       x = 0;

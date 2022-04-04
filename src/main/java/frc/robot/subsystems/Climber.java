@@ -17,7 +17,8 @@ import frc.robot.Constants;
 public class Climber extends SubsystemBase {
   CANSparkMax climberMotor = new CANSparkMax(Constants.CLIMBER_MOTOR_ID, MotorType.kBrushless);
   DigitalInput limitSwitch = new DigitalInput(0);
-  public AnalogPotentiometer potentiometer = new AnalogPotentiometer(0);
+  public AnalogPotentiometer potentiometer = new AnalogPotentiometer(1);
+  
 
   public Climber() {
     climberMotor.setIdleMode(IdleMode.kBrake);
@@ -28,14 +29,18 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setMotorSpeed(double speed){
+    public void setMotorSpeed(double speed){
     climberMotor.set(speed);
   }
 
   public boolean getLimitSwitch() {
     return limitSwitch.get();
   }
+  public double encoderCount()
+  {
+    return climberMotor.getEncoder().getPosition();
 
+  } 
   public void stop() {
     climberMotor.stopMotor();
   }
